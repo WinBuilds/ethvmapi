@@ -19,7 +19,7 @@ static inline int set_option(struct evmc_instance* instance, _GoString_ name, _G
 {
 	if (instance->set_option)
 		return instance->set_option(instance, name.p, value.p);
-	return -1;
+	return 0;
 }
 
 struct extended_context
@@ -169,9 +169,7 @@ func (instance *Instance) Version() string {
 
 func (instance *Instance) SetOption(name string, value string) (err error) {
 	r := C.set_option(instance.handle, name+"\x00", value+"\x00")
-	if r == -1 {
-		err = errors.New("evmc: VM does not accept any options")
-	} else if r != 0 {
+	if r != 1 {
 		err = fmt.Errorf("evmc: option '%s' not accepted", name)
 	}
 	return err
