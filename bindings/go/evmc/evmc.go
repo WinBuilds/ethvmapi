@@ -15,7 +15,7 @@ package evmc
 #include <stdlib.h>
 #include <string.h>
 
-inline int set_option(struct evmc_instance* instance, _GoString_ name, _GoString_ value)
+static inline int set_option(struct evmc_instance* instance, _GoString_ name, _GoString_ value)
 {
 	if (instance->set_option)
 		return instance->set_option(instance, name.p, value.p);
@@ -28,7 +28,7 @@ struct extended_context
 	int64_t index;
 };
 
-extern const struct evmc_context_fn_table fn_table;
+extern const struct evmc_context_fn_table evmc_go_fn_table;
 
 static struct evmc_result execute_wrapper(struct evmc_instance* instance, int64_t context_index, enum evmc_revision rev,
 	_GoBytes_ destination, _GoBytes_ sender, _GoBytes_ value, _GoBytes_ input, _GoBytes_ code_hash, int64_t gas,
@@ -47,7 +47,7 @@ static struct evmc_result execute_wrapper(struct evmc_instance* instance, int64_
 	memcpy(msg.value.bytes, value.p, sizeof(msg.value));
 	memcpy(msg.code_hash.bytes, code_hash.p, sizeof(msg.code_hash));
 
-	struct extended_context ctx = {{&fn_table}, context_index};
+	struct extended_context ctx = {{&evmc_go_fn_table}, context_index};
 	return instance->execute(instance, &ctx.context, rev, &msg, code.p, code.n);
 }
 */

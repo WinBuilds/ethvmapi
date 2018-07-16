@@ -15,7 +15,7 @@ struct extended_context
     int64_t index;
 };
 
-void free_result_output(const struct evmc_result* result);
+void evmc_go_free_result_output(const struct evmc_result* result);
 
 */
 import "C"
@@ -213,7 +213,7 @@ func call(pResult *C.struct_evmc_result, pCtx unsafe.Pointer, msg *C.struct_evmc
 		cOutput := C.CBytes(output)
 		result.output_data = (*C.uint8_t)(cOutput)
 		result.output_size = C.size_t(len(output))
-		result.release = (C.evmc_release_result_fn)(C.free_result_output)
+		result.release = (C.evmc_release_result_fn)(C.evmc_go_free_result_output)
 	}
 
 	*pResult = result
