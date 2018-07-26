@@ -62,6 +62,14 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
+// Static asserts.
+const (
+	_ = uint(common.HashLength - C.sizeof_struct_evmc_uint256be) // The size of evmc_uint256be equals the size of Hash.
+	_ = uint(C.sizeof_struct_evmc_uint256be - common.HashLength)
+	_ = uint(common.AddressLength - C.sizeof_struct_evmc_address) // The size of evmc_address equals the size of Address.
+	_ = uint(C.sizeof_struct_evmc_address - common.AddressLength)
+)
+
 type Error int32
 
 func (err Error) IsInternalError() bool {
