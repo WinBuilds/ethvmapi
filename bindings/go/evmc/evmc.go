@@ -34,7 +34,7 @@ static struct evmc_result execute_wrapper(struct evmc_instance* instance, int64_
 	_GoBytes_ destination, _GoBytes_ sender, _GoBytes_ value, _GoBytes_ input, _GoBytes_ code_hash, int64_t gas,
 	int32_t depth, uint32_t flags, _GoBytes_ code)
 {
-	struct evmc_message msg;
+	struct evmc_message msg = {};
 	msg.input_data = input.p;
 	msg.input_size = input.n;
 	msg.gas = gas;
@@ -152,13 +152,13 @@ func Load(filename string) (instance *Instance, err error) {
 	case C.EVMC_LOADER_SYMBOL_NOT_FOUND:
 		err = fmt.Errorf("evmc loader: the EVMC create function not found in %s", filename)
 	case C.EVMC_LOADER_INVALID_ARGUMENT:
-		panic("evmc loader: filename argument is empty")
+		panic("evmc loader: filename argument is invalid")
 	case C.EVMC_LOADER_INSTANCE_CREATION_FAILURE:
 		err = errors.New("evmc loader: VM instance creation failure")
 	case C.EVMC_LOADER_ABI_VERSION_MISMATCH:
 		err = errors.New("evmc loader: ABI version mismatch")
 	default:
-		panic(fmt.Sprintf("evmc loader: unexpected error (%d)", loaderErr))
+		panic(fmt.Sprintf("evmc loader: unexpected error (%d)", int(loaderErr)))
 	}
 	return instance, err
 }

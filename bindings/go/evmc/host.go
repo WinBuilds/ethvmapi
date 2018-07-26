@@ -33,6 +33,7 @@ const (
 	DelegateCall = C.EVMC_DELEGATECALL
 	CallCode     = C.EVMC_CALLCODE
 	Create       = C.EVMC_CREATE
+	Create2      = C.EVMC_CREATE2
 )
 
 func goAddress(in C.struct_evmc_address) common.Address {
